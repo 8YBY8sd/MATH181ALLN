@@ -1,0 +1,315 @@
+---
+title: "Discussion Week 1"
+output: html_document
+---
+
+# Working directory
+
+## Your working directory is the folder on your computer in which you are currently working.
+
+## Show current working directory
+
+```{r}
+getwd()
+```
+
+## Set working directory before you start working
+
+```{r}
+setwd("D:/desktop/ucsd/TA 181A WI23/week1")
+```
+
+# Getting Help
+
+## When you know the function
+
+```{r}
+help(log)
+?log
+```
+
+## If you just have a fuzzier idea
+
+```{r}
+help.search("log")
+??log
+```
+
+# Simple Calculation
+
+```{r}
+7+10
+2*3
+2^3
+sqrt(9)
+```
+
+# Variables
+
+## Use '\<-' or '=' operator to assign a value to a variable
+
+```{r}
+x <- 3.1
+x = 3.1
+x #print x
+```
+
+```{r}
+(x+2)/3 #do calculation with x
+```
+
+```{r}
+y <- exp(2*x)-1
+y
+```
+
+## List all variables in the environment
+
+```{r}
+ls()
+```
+
+## To remove all variables from R's memory
+
+```{r}
+rm(list=ls())
+```
+
+# Vectors
+
+## A vector is a sequence of elements of the same basic type.
+
+```{r}
+x <- c(5, 10, 50.6)
+x
+```
+
+```{r}
+y <- seq(from=0, to=10, by=0.25) #by: increment of the sequence
+y
+```
+
+```{r}
+z <- seq(from=0, to=0.75, len=10)
+z
+```
+
+# Vectors: operation
+
+## Vector operations are element-wise
+
+```{r}
+(1:5) + 1
+```
+
+```{r}
+(1:5) + (3:7)
+```
+
+```{r}
+(1:5)^2
+```
+
+```{r}
+(1:5) * (3:7)
+```
+
+## Matrix multiplication
+
+```{r}
+(1:5) %*% (3:7)
+```
+
+## We can also apply functions to vectors
+
+```{r}
+sum(x)
+mean(x)
+sd(x)
+```
+
+# Vectors: indexing
+
+```{r}
+x
+x[1]
+x[5]
+```
+
+```{r}
+x[3] <- 10.6
+x
+```
+
+```{r}
+x[1:3]
+```
+
+```{r}
+x[-2]
+x[c(1,3)]
+```
+
+# Data types: Matrices
+
+## A matrix has two dimensions
+
+```{r}
+mat <- matrix(data=c(9,2,3,4,5,6), ncol=3)
+mat
+```
+
+```{r}
+mat <- matrix(data=c(9,2,3,4,5,6), ncol=3, byrow=TRUE)
+mat
+```
+
+## Matrix-operation are similar to vector operation.
+
+```{r}
+mat[1, 2]
+mat[2, ]
+mean(mat)
+```
+
+```{r}
+dim(mat)
+```
+
+# Data types: Data frames
+
+## Data frames are matrix-like structures, but columns can be of different types
+
+```{r}
+t = data.frame(x = c(11,12,14), y = c(19,20,21), z = c("a","b","c"))
+t
+```
+
+## Select the column 'x'
+
+```{r}
+mean(t$x)
+mean(t[["x"]])
+mean(t[ ,"x"])
+```
+
+# Probability functions
+
+## For most probability distributions, R provides the following functions:
+
+ddist: density pdist: probability qdist: quantile rdist: random samples
+
+```{r}
+x <- seq(-5, 5, by=0.1)
+d <- dnorm(x); p <- pnorm(x)
+par(mfrow = c(1,2))
+plot(x, d)
+plot(x, p)
+```
+
+## Generate random variables
+
+```{r}
+x <- rnorm(1000) #generate 1000 standard normally distributed r.v., stored in a vector.
+y <- rnorm(1000, mean=50, sd=.1)
+par(mfrow = c(1,2))
+hist(x, main = NULL)
+hist(y, main = NULL)
+```
+
+# Control flow: If-statement
+
+```{r}
+w = 2
+if (w<5){
+  d=2
+} else {
+  d=10
+}
+d
+```
+
+# Control flow: For-loop
+
+```{r}
+h = seq(from=1, to=8)
+s = c()
+for (i in 2:10){
+  s[i]= h[i]*10
+}
+s
+```
+
+# Hint for homework 1: R simulation
+
+Generate and plot 1 paths of sample means from $n=1$ to $n=40$ for case (a): $(X_1+...+X_n)/n$.
+
+```{r}
+# sampling
+n = 40
+x = runif(n, 0, 2)
+
+# generate y[i] = (x[1]+...+x[i])/i
+y = rep(0, n)
+for (i in 1:n){
+  y[i] = mean(x[1: i])
+}
+
+# plot
+plot(1:n, y, type = 'l', ylim = c(0, 2))
+
+x = runif(n, 0, 2)
+# generate y[i] = (x[1]+...+x[i])/i
+y = rep(0, n)
+for (i in 1:n){
+  y[i] = mean(x[1: i])
+}
+
+for(j in 1:9){
+  x = runif(n, 0, 2)
+  # generate y[i] = (x[1]+...+x[i])/i
+  y = rep(0, n)
+  for (i in 1:n){
+    y[i] = mean(x[1: i])
+  }
+  lines(1:n, y)
+}
+
+```
+
+Then use function 'lines' to plot the other 9 paths in the same plot. Also, plot 10 paths for case (b) using similar method.
+
+
+
+```{r}
+# sampling
+n = 40
+x = runif(n, 0, 2)^2
+
+# generate y[i] = (x[1]+...+x[i])/i
+y = rep(0, n)
+for (i in 1:n){
+  y[i] = mean(x[1: i])
+}
+
+# plot
+plot(1:n, y, type = 'l', ylim = c(0, 4))
+
+x = runif(n, 0, 2)
+# generate y[i] = (x[1]+...+x[i])/i
+y = rep(0, n)
+for (i in 1:n){
+  y[i] = mean(x[1: i])
+}
+
+for(j in 1:9){
+  x = runif(n, 0, 2)^2
+  # generate y[i] = (x[1]+...+x[i])/i
+  y = rep(0, n)
+  for (i in 1:n){
+    y[i] = mean(x[1: i])
+  }
+  lines(1:n, y)
+}
+
+```
